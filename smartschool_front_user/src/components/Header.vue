@@ -13,7 +13,7 @@
         />
       </el-menu-item>
       <div class="flex-grow"/>
-      <el-menu-item index="1">xxx</el-menu-item>
+      <el-menu-item index="/im">聊天室</el-menu-item>
       <el-menu-item :index="`/my/${userId}`">个人中心</el-menu-item>
     </el-menu>
   </div>

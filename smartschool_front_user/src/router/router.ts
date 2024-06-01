@@ -21,8 +21,10 @@ const routes: Array<RouteRecordRaw> = [
             {path: 'login', name: 'Login', component: () => import('../views/pub/Login.vue')},
             {path: 'register', name: 'Register', component: () => import('../views/pub/Register.vue')},
             {path: 'test', name: 'Test', component: () =>import('../views/pub/Test.vue')},
+            {path: 'im', name: 'Im', component: () =>import('../views/pub/Im.vue')},
             {path: 'chat/', name: 'Chat', component: () =>import('../views/pub/Chat.vue')},
             {path: 'articleByTag/:tag', name: 'ArticleByTag', component: () =>import('../views/pub/ArticleTag.vue')},
+
         ]
     }
 ]
