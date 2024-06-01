@@ -1,4 +1,4 @@
-package com.taffy.neko.config.interceptor;
+package com.taffy.neko.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;

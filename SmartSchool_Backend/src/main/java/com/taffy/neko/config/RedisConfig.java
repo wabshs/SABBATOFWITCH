@@ -1,4 +1,4 @@
-package com.taffy.neko.config.interceptor;
+package com.taffy.neko.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

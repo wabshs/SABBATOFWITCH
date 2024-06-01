@@ -1,4 +1,4 @@
-package com.taffy.neko.config.interceptor;
+package com.taffy.neko.config;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;

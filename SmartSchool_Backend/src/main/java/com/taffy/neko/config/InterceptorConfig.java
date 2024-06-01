@@ -1,5 +1,6 @@
-package com.taffy.neko.config.interceptor;
+package com.taffy.neko.config;
 
+import com.taffy.neko.config.interceptor.JWTInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
