@@ -1,0 +1,31 @@
+{
+  "name": "smartschool_front_user",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
+    "@element-plus/icons-vue": "^2.3.1",
+    "@vueuse/core": "^9.13.0",
+    "ant-design-vue": "4.x",
+    "axios": "^1.6.8",
+    "easy-typer-js": "^2.1.0",
+    "element-plus": "^2.5.3",
+    "highlight.js": "^11.9.0",
+    "md-editor-v3": "^4.11.2",
+    "undraw-ui": "1.0.7",
+    "vue": "^3.3.11",
+    "vue-router": "4.*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "vue-tsc": "^2.0.6"
+  }
+}

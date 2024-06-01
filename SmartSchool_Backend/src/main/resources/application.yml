@@ -1,0 +1,37 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /api #指定前缀
+
+
+spring:
+  application:
+    name: 智慧校园论坛系统
+  datasource:
+    url: jdbc:mysql://localhost:3306/school?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.yeah.net
+    username: xxxxxxxxxxxxxxxxxx
+    password: xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# 开启SQL语句打印
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# knife4j
+knife4j:
+  enable: true
+
+aliyun:
+  oss:
+    endpoint: xxxxxxxxxxxxxxx
+    accessKeyId: xxxxxxxxxxxxxxx
+    accessKeySecret: xxxxxxxxxxxxxxx
+    bucketName: xxxxxxxxxxxxxxxxxxxx
+    maxSize: 10
+    dir:
+      prefix: picture/
