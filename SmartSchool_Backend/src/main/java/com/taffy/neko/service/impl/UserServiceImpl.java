@@ -11,6 +11,7 @@ import com.taffy.neko.enums.ResponseEnum;
 import com.taffy.neko.mapper.UserMapper;
 import com.taffy.neko.models.convertor.UserConvert;
 import com.taffy.neko.models.dto.UpdateAboutMeDTO;
+import com.taffy.neko.models.dto.UpdateUserProfileDTO;
 import com.taffy.neko.models.dto.UserLoginDTO;
 import com.taffy.neko.models.dto.UserRegisterDTO;
 import com.taffy.neko.models.vo.AboutMeVO;
@@ -106,7 +107,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userMapper.selectCount(lambdaQueryWrapper) == 1) {
             //把这个User查出来返回id
             User user = userMapper.selectOne(lambdaQueryWrapper);
-            if (user.getIsDeleted() == 0){
+            if (user.getIsDeleted() == 0) {
                 throw new ServiceException(ResponseEnum.ACCOUNT_BANNED);
             }
             String token = TokenUtils.getToken(user.getId(), reqDTO.getPassword());
@@ -148,5 +149,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return new R<>().success(ResponseEnum.SUCCESS, count);
     }
 
+    @Override
+    public R<?> updateUserProfile(UpdateUserProfileDTO reqDTO) {
+        User user = UserConvert.INSTANT.toUser(reqDTO);
+        int i = userMapper.updateById(user);
+        if (i == 1) {
+            return new R<>().success(ResponseEnum.SUCCESS);
+        } else {
+            throw new ServiceException(ResponseEnum.ERROR);
+        }
 
+    }
 }

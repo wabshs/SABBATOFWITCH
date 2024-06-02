@@ -32,6 +32,12 @@ const commentReplyForm = reactive({
 const total = ref(0)
 const dialogVisible = ref(false)
 
+const noticeParams = reactive({
+  userId: userId,
+  toUserId: '',
+  articleId: articleId
+})
+
 onMounted(() => {
   getCommentList()
 })
@@ -67,12 +73,24 @@ function submitComment() {
 
 }
 
+//通知回复
+function noticeUser() {
+  request.post('/comment/noticeUser',noticeParams)
+      .then(res=>{
+        if(res.code === 200) {
+          console.log('邮件通知成功!')
+        }
+      })
+}
+
+
 // 提交回复
 function initSubmitReplyForm(rootId: string, toCommentId: string, toCommentUserId: string) {
   dialogVisible.value = true
   commentReplyForm.toCommentId = toCommentId
   commentReplyForm.toCommentUserId = toCommentUserId
   commentReplyForm.rootId = rootId
+  noticeParams.toUserId = toCommentUserId
 }
 
 function submitReplyForm() {
@@ -85,6 +103,8 @@ function submitReplyForm() {
           commentReplyForm.content = ''
           //加载
           getCommentList()
+          noticeUser()
+
         } else {
           ElMessage.error(res.msg)
         }

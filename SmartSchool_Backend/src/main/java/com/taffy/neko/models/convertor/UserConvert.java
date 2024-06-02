@@ -3,6 +3,7 @@ package com.taffy.neko.models.convertor;
 
 import com.taffy.neko.entity.User;
 import com.taffy.neko.models.dto.UpdateAboutMeDTO;
+import com.taffy.neko.models.dto.UpdateUserProfileDTO;
 import com.taffy.neko.models.dto.UserRegisterDTO;
 import com.taffy.neko.models.vo.AboutMeVO;
 import com.taffy.neko.models.vo.UserInfoVO;
@@ -28,4 +29,7 @@ public interface UserConvert {
     User toUserVO(UserRegisterDTO userRegisterDTO);
 
     List<UserInfoVO> toUserInfoVOList(List<User> userList);
+
+    //dto -> DO
+    User toUser(UpdateUserProfileDTO updateUserProfileDTO);
 }

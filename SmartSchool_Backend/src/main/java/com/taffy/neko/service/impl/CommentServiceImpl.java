@@ -5,16 +5,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.taffy.neko.Exception.ServiceException;
 import com.taffy.neko.Result.R;
+import com.taffy.neko.entity.Article;
 import com.taffy.neko.entity.Comment;
 import com.taffy.neko.entity.User;
 import com.taffy.neko.enums.ResponseEnum;
+import com.taffy.neko.mapper.ArticleMapper;
 import com.taffy.neko.mapper.CommentMapper;
 import com.taffy.neko.mapper.UserMapper;
 import com.taffy.neko.models.convertor.CommentConvert;
+import com.taffy.neko.models.dto.NoticeUserDTO;
 import com.taffy.neko.models.vo.CommentVO;
 import com.taffy.neko.models.vo.PageVo;
 import com.taffy.neko.service.CommentService;
+import com.taffy.neko.service.EmailService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,6 +31,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private EmailService emailService;
+
+    @Resource
+    private ArticleMapper articleMapper;
 
 
     @Override
@@ -66,6 +77,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     }
 
+    @Override
+    public R<?> noticeUser(NoticeUserDTO reqDTO) {
+        User user = userMapper.selectById(reqDTO.getUserId());
+        //发送人
+        String nickName = user.getNickName();
+        User user2 = userMapper.selectById(reqDTO.getToUserId());
+        //接收人
+        String email = user2.getEmail();
+        String header = articleMapper.selectById(reqDTO.getArticleId()).getHeader();
+        emailService.sendNoticeToUser(email, header, nickName);
+        return new R<>().success(ResponseEnum.SUCCESS);
+    }
+
     /**
      * 根据根评论Id返回子评论的集合
      *
@@ -101,4 +125,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }
         return commentVOList;
     }
+
+
 }

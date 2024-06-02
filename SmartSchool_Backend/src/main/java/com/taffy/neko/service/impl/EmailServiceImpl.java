@@ -46,4 +46,19 @@ public class EmailServiceImpl implements EmailService {
             throw new ServiceException(ResponseEnum.ERROR);
         }
     }
+
+    @Override
+    public R<?> sendNoticeToUser(String to, String header, String nickName) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(from);
+        message.setTo(to);
+        message.setSubject("智慧校园论坛");
+        message.setText("【智慧校园】您在文章 " + header + " 下的留言被 " + nickName + "回复了，快去看看吧！");
+        try {
+            MailSender.send(message);
+            return new R<>().success(ResponseEnum.SUCCESS);
+        } catch (Exception e) {
+            throw new ServiceException(ResponseEnum.ERROR);
+        }
+    }
 }

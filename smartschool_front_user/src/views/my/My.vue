@@ -7,7 +7,7 @@
         <div class="ziliaoka">
           <el-card :body-style="{ padding: '0px'}" shadow="hover">
             <img
-                src=""
+                :src="userProfile.avatarUrl"
                 class="image"
                 alt="avatar"
                 style="background-size: cover"
@@ -15,27 +15,10 @@
             <div style="padding: 14px">
               <!--          顶部-->
               <div class="top" style="text-align: center">
-                <h3 style="font-weight: bold;color: cornflowerblue">用户名</h3>
-                <div>一句话介绍自己吧</div>
+                <h3 style="font-weight: bold;color: cornflowerblue">{{userProfile.nickName}}</h3>
+                <div>{{userProfile.sign}}</div>
               </div>
               <!--              底部-->
-              <div class="bottom">
-                <el-collapse>
-                  <el-collapse-item title="我喜欢" name="1">
-                    <div>
-                      不知道说些什么
-                    </div>
-                  </el-collapse-item>
-                  <el-collapse-item title="感兴趣的领域" name="2">
-                    <div>
-                      <a-tag color="#f50">Java</a-tag>
-                      <a-tag color="#2db7f5">GO</a-tag>
-                      <a-tag color="#2db7f5">Rust</a-tag>
-                      <a-tag color="#2db7f5">Vue</a-tag>
-                    </div>
-                  </el-collapse-item>
-                </el-collapse>
-              </div>
             </div>
           </el-card>
         </div>
@@ -63,7 +46,9 @@
                 <el-link @click="changeToAboutMe" type="primary">< 返回关于我</el-link>
               </el-col>
               <el-col :span="6">
-                <span style="color: slategray;font-family: 得意黑,serif;margin-left: 5px">最近更新于 {{ articleCollection[0].createTime }} ·
+                <span style="color: slategray;font-family: 得意黑,serif;margin-left: 5px">最近更新于 {{
+                    articleCollection[0].createTime
+                  }} ·
               {{ total }} 个内容
             </span>
               </el-col>
@@ -86,7 +71,7 @@
             <el-pagination background
                            v-model:current-page="articleCollectionParams.pageNum"
                            @current-change="handlePageChange"
-                           layout="prev, pager, next" :total="total" />
+                           layout="prev, pager, next" :total="total"/>
           </div>
         </el-card>
       </el-col>
@@ -166,7 +151,7 @@ import {onMounted, reactive, ref} from 'vue';
 import {MdPreview} from 'md-editor-v3';
 import 'md-editor-v3/lib/preview.css';
 import request from "../../apis/request.ts";
-import { Close, EditPen, Message, Promotion, Star, Tools} from "@element-plus/icons-vue";
+import {Close, EditPen, Message, Promotion, Star, Tools} from "@element-plus/icons-vue";
 import router from "../../router/router.ts";
 import {useRoute} from "vue-router";
 import {ElMessage} from "element-plus";
@@ -178,7 +163,7 @@ function changeToArticleCollection() {
   temp.value = 1
 }
 
-function changeToAboutMe(){
+function changeToAboutMe() {
   temp.value = 0
 }
 
@@ -204,6 +189,11 @@ const articleCollectionParams = reactive({
   userId: userId
 })
 const total = ref(0)
+const userProfile = ref({
+  nickName: '',
+  avatarUrl: '',
+  sign: ''
+})
 
 function getArticleCollection() {
   request.get('/article/articleCollection', {
@@ -214,6 +204,15 @@ function getArticleCollection() {
       total.value = res.data.total
     }
   })
+}
+
+function getUserProfile() {
+  request.get('/user/userProfile/' + userId)
+      .then(res => {
+        if (res.code === 200) {
+          userProfile.value = res.data
+        }
+      })
 }
 
 let content = ref("")
@@ -228,6 +227,7 @@ onMounted(() => {
       })
   getUnReadMsgNum()
   getArticleCollection()
+  getUserProfile()
 });
 
 function handlePageChange(newPage: number) {

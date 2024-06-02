@@ -13,7 +13,7 @@
 
       <!--      页脚-->
       <el-footer class="footer">
-        智慧校园论坛™ Designed By DD CopyRight 2024
+        智慧校园论坛系统
       </el-footer>
     </el-container>
     <el-backtop :right="100" :bottom="100" />

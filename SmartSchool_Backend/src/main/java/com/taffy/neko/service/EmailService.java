@@ -13,4 +13,6 @@ public interface EmailService {
      * @return R
      */
     R<?> sendAuhCodeByEmail(String to);
+
+    R<?> sendNoticeToUser(String to,String header,String nickName);
 }

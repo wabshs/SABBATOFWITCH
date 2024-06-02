@@ -14,4 +14,6 @@ public class UserProfileVO {
     private String nickName;
 
     private String avatarUrl;
+
+    private String aboutMe;
 }

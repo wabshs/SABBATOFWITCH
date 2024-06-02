@@ -1,79 +1,61 @@
 <script setup lang="ts">
-import {nextTick, onMounted, reactive, ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {MdEditor} from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import {useRoute} from "vue-router";
 import request from "../../apis/request.ts";
-import {ElInput, ElMessage} from "element-plus";
+import {ElInput, ElMessage, UploadInstance} from "element-plus";
 import {FolderChecked} from "@element-plus/icons-vue";
+import router from "../../router/router.ts";
 
-const text = ref('');
+
+const upload = ref<UploadInstance>()
 const route = useRoute();
 const userId = route.params.id;
-const form = reactive({
+const form = ref({
   nickName: '',
   likes: '',
   sign: '',
+  aboutMe: '',
+  avatarUrl: ''
 })
-const inputValue = ref('')
-const dynamicTags = ref(['Tag 1', 'Tag 2', 'Tag 3'])
-const inputVisible = ref(false)
-const InputRef = ref<InstanceType<typeof ElInput>>()
 
-const handleClose = (tag: string) => {
-  dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
-}
-
-const showInput = () => {
-  inputVisible.value = true
-  nextTick(() => {
-    InputRef.value!.input!.focus()
-  })
-}
-
-const handleInputConfirm = () => {
-  if (inputValue.value) {
-    dynamicTags.value.push(inputValue.value)
-  }
-  inputVisible.value = false
-  inputValue.value = ''
-}
-
-
-
-
-//传给后端的参数
-const formData = reactive({
-  id: userId,
-  aboutMe: text
-})
 
 onMounted(() => {
-  request.get("/user/aboutMe/" + userId)
-      .then(res => {
-        text.value = res.data.aboutMe
-      })
+  getUserProfile()
 })
 
-function updateAboutMe() {
-  request.put("/user/updateAboutMe", formData)
+function getUserProfile() {
+  request.get('/user/userProfile/' + userId)
       .then(res => {
         if (res.code === 200) {
-          ElMessage({
-            message: '修改成功!',
-            type: 'success'
-          })
-        } else {
-          ElMessage.error('出错了，请联系管理员')
+          form.value = res.data
         }
       })
 }
 
+function handleSuccess(response: any) {
+  form.value.avatarUrl = response.data
+  console.log(form.value.avatarUrl)
+}
+
+function updateUserProfile() {
+  request.put('/user/updateUserProfile', form.value)
+      .then(res => {
+        if (res.code === 200) {
+          router.push(`/my/${userId}`)
+          ElMessage.success('操作成功!')
+        } else {
+          ElMessage.error(res.msg)
+        }
+      })
+}
+
+
 </script>
 
 <template>
-  <div>
-
+  <div style="padding: 10px">
     <h1>基础资料修改</h1>
     <div style="margin-top: 10px">
       <el-form :model="form" label-width="auto" style="max-width: 400px">
@@ -85,30 +67,16 @@ function updateAboutMe() {
           <el-input type="textarea" v-model="form.sign"/>
         </el-form-item>
 
-        <el-form-item label="兴趣爱好">
-          <div class="flex gap-2">
-            <el-tag
-                v-for="tag in dynamicTags"
-                :key="tag"
-                closable
-                :disable-transitions="false"
-                @close="handleClose(tag)"
-            >
-              {{ tag }}
-            </el-tag>
-            <el-input
-                v-if="inputVisible"
-                ref="InputRef"
-                v-model="inputValue"
-                class="w-20"
-                size="small"
-                @keyup.enter="handleInputConfirm"
-                @blur="handleInputConfirm"
-            />
-            <el-button v-else class="button-new-tag" size="small" @click="showInput">
-              + New Tag
-            </el-button>
-          </div>
+        <el-form-item label="头像">
+          <el-upload
+              :ref="upload"
+              :limit="1"
+              action="http://localhost:8081/api/file/uploadPic"
+              list-type="picture"
+              :on-success="handleSuccess"
+          >
+            <el-button type="primary">点击上传头像</el-button>
+          </el-upload>
         </el-form-item>
       </el-form>
     </div>
@@ -116,8 +84,9 @@ function updateAboutMe() {
 
     <div style="margin-top: 20px">
       <h1>关于我内容编辑</h1>
-      <MdEditor v-model="text"></MdEditor>
-      <el-button :icon="FolderChecked" type="primary" style="margin-top: 10px;margin-left: 20px" @click="updateAboutMe">
+      <MdEditor v-model="form.aboutMe"></MdEditor>
+      <el-button :icon="FolderChecked" type="primary" style="margin-top: 10px;margin-left: 20px"
+                 @click="updateUserProfile">
         保存
       </el-button>
     </div>

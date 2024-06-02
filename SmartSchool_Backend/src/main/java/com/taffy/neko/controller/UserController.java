@@ -3,6 +3,7 @@ package com.taffy.neko.controller;
 
 import com.taffy.neko.Result.R;
 import com.taffy.neko.models.dto.UpdateAboutMeDTO;
+import com.taffy.neko.models.dto.UpdateUserProfileDTO;
 import com.taffy.neko.models.dto.UserLoginDTO;
 import com.taffy.neko.models.dto.UserRegisterDTO;
 import com.taffy.neko.service.UserService;
@@ -73,6 +74,13 @@ public class UserController {
     @ApiOperation("和每个私聊用户的未读消息数量")
     public R<?> getUnReadMsgNumOne(@RequestParam String toId, @RequestParam String fromId) {
         return userService.getUnReadMsgNumOne(toId,fromId);
+    }
+
+
+    @PutMapping("/updateUserProfile")
+    @ApiOperation(value = "修改用户个人资料")
+    public R<?> updateUserProfile(@RequestBody UpdateUserProfileDTO reqDTO){
+        return userService.updateUserProfile(reqDTO);
     }
 
 

@@ -14,8 +14,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   mail:
     host: smtp.yeah.net
-    username: xxxxxxxxxxxxxxxxxx
-    password: xxxxxxxxxxxxxxxxxxxxxxxxxx
+    username: xxxxxxxxxxxxxxx
+    password: xxxxxxxxxxxxxxx
 
 # 开启SQL语句打印
 mybatis-plus:
@@ -29,9 +29,9 @@ knife4j:
 aliyun:
   oss:
     endpoint: xxxxxxxxxxxxxxx
-    accessKeyId: xxxxxxxxxxxxxxx
+    accessKeyId: xxxxxxxxxxxxxxxxx
     accessKeySecret: xxxxxxxxxxxxxxx
-    bucketName: xxxxxxxxxxxxxxxxxxxx
+    bucketName: xxxxxxxxxxxxx
     maxSize: 10
     dir:
       prefix: picture/

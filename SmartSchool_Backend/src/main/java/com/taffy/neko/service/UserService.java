@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.taffy.neko.Result.R;
 import com.taffy.neko.entity.User;
 import com.taffy.neko.models.dto.UpdateAboutMeDTO;
+import com.taffy.neko.models.dto.UpdateUserProfileDTO;
 import com.taffy.neko.models.dto.UserLoginDTO;
 import com.taffy.neko.models.dto.UserRegisterDTO;
 
@@ -55,4 +56,6 @@ public interface UserService extends IService<User> {
     R<?> getUnReadMsgNum(String id);
 
     R<?> getUnReadMsgNumOne(String toId, String fromId);
+
+    R<?> updateUserProfile(UpdateUserProfileDTO reqDTO);
 }
